@@ -14,7 +14,7 @@
 
         public User(string username, string password, string email)
         {
-            Id = new Guid();
+            UserId = new Guid();
             Username = username;
             Password = password;
             Email = email;
