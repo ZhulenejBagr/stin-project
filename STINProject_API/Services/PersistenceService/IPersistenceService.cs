@@ -8,6 +8,7 @@ namespace STINProject_API.Services.PersistenceService
         public User GetUser(Guid id);
         public User GetUser(string username);
         public IEnumerable<Account> GetAccounts(Guid userId);
+        public bool AddAccount(Account account);
         public IEnumerable<Transaction> GetTransactions(Guid accountId);
         public bool AddTransaction(Transaction transaction);
 

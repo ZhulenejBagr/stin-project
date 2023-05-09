@@ -4,49 +4,47 @@ using STINProject_API.Services.PersistenceService.Models;
 
 namespace STINProject_API.Services.PersistenceService
 {
-    public class SQLitePersistenceService : DbContext, IPersistenceService
+    public class SQLitePersistenceService : IPersistenceService
     {
-        private DbSet<Transaction> _transactions;
-        private DbSet<Account> _accounts;
-        private DbSet<User> _users;
-
-        private string DbPath;
-
+        private readonly SQLiteDataContext _context;
         public SQLitePersistenceService()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "bank.db");
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite($"Data source={DbPath}");
+            var connectionString = $"Data source={Path.Join(path, "blogging.db")}";
+            _context = new SQLiteDataContext(connectionString);
         }
 
         public bool AddTransaction(Transaction transaction)
         {
-            this.Add(transaction);
-            return this.SaveChanges() == 1;
+            _context.Add(transaction);
+            return _context.SaveChanges() == 1;
         }
 
         public IEnumerable<Account> GetAccounts(Guid userId)
         {
-            return this._accounts.Where(x => x.OwnerId == userId);
+            return _context.Accounts.Where(x => x.OwnerId == userId);
         }
 
         public IEnumerable<Transaction> GetTransactions(Guid accountId)
         {
-            return this._transactions.Where(x => x.AccountID == accountId);
+            return _context.Transactions.Where(x => x.AccountID == accountId);
         }
 
         public User GetUser(Guid id)
         {
-            return this._users.Single(x => x.UserId == id);
+            return _context.Users.Single(x => x.UserId == id);
         }
 
         public User GetUser(string username)
         {
-            return this._users.Single(x => x.Username == username);
+            return _context.Users.Single(x => x.Username == username);
+        }
+
+        public bool AddAccount(Account account)
+        {
+            _context.Add(account);
+            return _context.SaveChanges() == 1;
         }
     }
 }
