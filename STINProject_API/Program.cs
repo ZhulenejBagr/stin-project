@@ -1,4 +1,6 @@
 
+using STINProject_API.Services.PersistenceService;
+
 namespace STINProject_API
 {
     public class Program
@@ -13,6 +15,9 @@ namespace STINProject_API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<SQLiteDataContext>();
+            builder.Services.AddScoped<IPersistenceService, SQLitePersistenceService>();
 
             var app = builder.Build();
 

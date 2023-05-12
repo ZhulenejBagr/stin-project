@@ -4,11 +4,11 @@ namespace STINProject_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MainController : ControllerBase
+    public class BankController : ControllerBase
     {
-        private readonly ILogger<MainController> _logger;
+        private readonly ILogger<BankController> _logger;
 
-        public MainController(ILogger<MainController> logger)
+        public BankController(ILogger<BankController> logger)
         {
             _logger = logger;
         }

@@ -1,11 +1,21 @@
-﻿namespace STINProject_API.Services.PersistenceService.Models
+﻿using STINProject_API.Services.PersistenceService.Model;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace STINProject_API.Services.PersistenceService.Models
 {
     public class Transaction
     {
-        public Guid TransactionID { get; private set; }
-        public Guid AccountID { get; private set; }
-        public double Value { get; private set; }
-        public DateTime Date { get; private set; }
+        [Key]
+        public Guid TransactionID { get; set; }
+        [ForeignKey("Account")]
+        public Guid AccountID { get; set; }
+        [Required]
+        public double Value { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
+
+        public Account Account { get; set; }
 
         public Transaction(Guid accountID, double value, DateTime date)
         {
@@ -14,5 +24,7 @@
             Value = value;
             Date = date;
         }
+
+        public Transaction() { }
     }
 }

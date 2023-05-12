@@ -11,22 +11,35 @@ namespace STINProject_API.Services.PersistenceService
         public DbSet<User> Users { get; private set; }
 
         private readonly string _connectionString = string.Empty;
+        public SQLiteDataContext()
+        {
+            // TODO add hidden prod connection string
+            _connectionString = "Data Source=c:\\mydb.db;Version=3;";
+        }
+
         public SQLiteDataContext(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public SQLiteDataContext(DbContextOptions<SQLiteDataContext> options) : base(options)
-        {
-        }
+        public SQLiteDataContext(DbContextOptions<SQLiteDataContext> options) : base(options) { }
         
-        public SQLiteDataContext()
-        {
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(_connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            /*
+            modelBuilder.Entity<Account>()
+                .HasOne(x => x.Owner)
+                .WithMany(x => x.Accounts)
+                .HasForeignKey(x => x.OwnerId);
+            */
         }
 
     }

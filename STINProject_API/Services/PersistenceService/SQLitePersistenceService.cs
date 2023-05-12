@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using STINProject_API.Services.PersistenceService.Model;
+﻿using STINProject_API.Services.PersistenceService.Model;
 using STINProject_API.Services.PersistenceService.Models;
 
 namespace STINProject_API.Services.PersistenceService
@@ -7,19 +6,11 @@ namespace STINProject_API.Services.PersistenceService
     public class SQLitePersistenceService : IPersistenceService
     {
         private readonly SQLiteDataContext _context;
-        public SQLitePersistenceService()
+        public SQLitePersistenceService(SQLiteDataContext context)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            var connectionString = $"Data source={Path.Join(path, "blogging.db")}";
-            _context = new SQLiteDataContext(connectionString);
+            _context = context;
         }
 
-        public bool AddTransaction(Transaction transaction)
-        {
-            _context.Add(transaction);
-            return _context.SaveChanges() == 1;
-        }
 
         public IEnumerable<Account> GetAccounts(Guid userId)
         {
@@ -40,11 +31,35 @@ namespace STINProject_API.Services.PersistenceService
         {
             return _context.Users.Single(x => x.Username == username);
         }
+        public bool AddTransaction(Transaction transaction)
+        {
+           return TryAddObject(transaction);
+        }
 
         public bool AddAccount(Account account)
         {
-            _context.Add(account);
-            return _context.SaveChanges() == 1;
+            return TryAddObject(account);
+        }
+
+        public bool AddUser(User user)
+        {
+            return TryAddObject(user);
+        }
+
+        private bool TryAddObject(object obj) 
+        {
+            var status = false;
+            try
+            {
+                _context.Add(obj);
+                status = _context.SaveChanges() > 0;
+            }
+            catch
+            {
+                status = false;
+            }
+
+            return status;
         }
     }
 }

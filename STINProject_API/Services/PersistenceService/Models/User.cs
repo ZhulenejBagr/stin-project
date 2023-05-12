@@ -1,16 +1,25 @@
-﻿namespace STINProject_API.Services.PersistenceService.Model
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+
+namespace STINProject_API.Services.PersistenceService.Model
 {
     public class User
     {
-        public Guid UserId { get; private set; }
-
-        public string Username { get; private set; }
+        [Key]
+        public Guid UserId { get; set; }
+        [Required]
+        public string Username { get; set; }
 
         // TODO hash password
-        public string Password { get; private set; }
+        [Required]
+        public string Password { get; set; }
 
         // TODO verify if email address is valid
-        public string Email { get; private set; }
+        [Required]
+        public string Email { get; set; }
+
+        public IEnumerable<Account> Accounts { get; set; }
 
         public User(string username, string password, string email)
         {
@@ -19,5 +28,7 @@
             Password = password;
             Email = email;
         }
+
+        public User() { }
     }
 }
