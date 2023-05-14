@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using STINProject_API.Services.PersistenceService.Model;
 
-namespace STINProject_API.Tests.Services
+namespace STINProject_API.Tests.Services.PersistenceService
 {
     [TestCaseOrderer("STINProject_API.Tests.PriorityOrderer", "STINProject_API")]
     public class SQLitePersistenceServiceTest : IClassFixture<DatabaseFixture>
     {
-        private DatabaseFixture _fixture;
+        private readonly DatabaseFixture _fixture;
 
         public SQLitePersistenceServiceTest(DatabaseFixture fixture)
         {

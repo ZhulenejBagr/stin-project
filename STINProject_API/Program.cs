@@ -1,4 +1,5 @@
 
+using STINProject_API.Services.ExchangeRateService;
 using STINProject_API.Services.PersistenceService;
 
 namespace STINProject_API
@@ -18,6 +19,9 @@ namespace STINProject_API
 
             builder.Services.AddDbContext<SQLiteDataContext>();
             builder.Services.AddScoped<IPersistenceService, SQLitePersistenceService>();
+
+            builder.Services.AddSingleton<IExchangeRateService, SimpleExchangeRateService>();
+            builder.Services.AddSingleton<IExchangeRateGetter, ExchangeRateGetter>();
 
             var app = builder.Build();
 

@@ -4,7 +4,7 @@ using STINProject_API.Services.PersistenceService;
 using STINProject_API.Services.PersistenceService.Model;
 using STINProject_API.Services.PersistenceService.Models;
 
-namespace STINProject_API.Tests.Services
+namespace STINProject_API.Tests.Services.PersistenceService
 {
     public class DatabaseFixture : IDisposable
     {
