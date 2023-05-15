@@ -1,5 +1,8 @@
 
+<<<<<<< HEAD
 using STINProject_API.Services.ExchangeRateService;
+=======
+>>>>>>> fa5c31d53c1373a304a89e6f19ac0359047091e0
 using STINProject_API.Services.PersistenceService;
 
 namespace STINProject_API
@@ -20,9 +23,12 @@ namespace STINProject_API
             builder.Services.AddDbContext<SQLiteDataContext>();
             builder.Services.AddScoped<IPersistenceService, SQLitePersistenceService>();
 
+<<<<<<< HEAD
             builder.Services.AddSingleton<IExchangeRateService, SimpleExchangeRateService>();
             builder.Services.AddSingleton<IExchangeRateGetter, ExchangeRateGetter>();
 
+=======
+>>>>>>> fa5c31d53c1373a304a89e6f19ac0359047091e0
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
