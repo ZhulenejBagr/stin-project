@@ -1,10 +1,16 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿using System.ComponentModel.DataAnnotations;
 =======
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 >>>>>>> fa5c31d53c1373a304a89e6f19ac0359047091e0
+=======
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+>>>>>>> parent of c2a5f9a (refactoring, update tests)
 
 namespace STINProject_API.Services.PersistenceService.Model
 {

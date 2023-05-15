@@ -1,4 +1,4 @@
-﻿using STINProject_API.Services.PersistenceService.Model;
+using STINProject_API.Services.PersistenceService.Model;
 using STINProject_API.Services.PersistenceService.Models;
 
 namespace STINProject_API.Services.PersistenceService
@@ -24,28 +24,21 @@ namespace STINProject_API.Services.PersistenceService
 
         public User GetUser(Guid id)
         {
-<<<<<<< HEAD
             return _context.Users.First(x => x.UserId == id);
-=======
-            return _context.Users.Single(x => x.UserId == id);
->>>>>>> fa5c31d53c1373a304a89e6f19ac0359047091e0
         }
 
         public User GetUser(string username)
         {
-<<<<<<< HEAD
+
             return _context.Users.First(x => x.Username == username);
         }
         public bool AddTransaction(Transaction transaction)
         {
-            return TryAddObject(transaction);
-=======
             return _context.Users.Single(x => x.Username == username);
         }
         public bool AddTransaction(Transaction transaction)
         {
            return TryAddObject(transaction);
->>>>>>> fa5c31d53c1373a304a89e6f19ac0359047091e0
         }
 
         public bool AddAccount(Account account)
@@ -57,12 +50,8 @@ namespace STINProject_API.Services.PersistenceService
         {
             return TryAddObject(user);
         }
-
-<<<<<<< HEAD
-        private bool TryAddObject(object obj)
-=======
+ 
         private bool TryAddObject(object obj) 
->>>>>>> fa5c31d53c1373a304a89e6f19ac0359047091e0
         {
             var status = false;
             try

@@ -11,7 +11,6 @@ namespace STINProject_API.Services.ExchangeRateService
 
         private ExchangeRateDocument _savedDocument;
 
-        // TODO periodically get document at specific time intervals
         public ExchangeRateGetter()
         {
             _savedDocument = ParseExchangeDocument(RequestDocument().Result);
@@ -28,7 +27,7 @@ namespace STINProject_API.Services.ExchangeRateService
 
         private static ExchangeRateDocument ParseExchangeDocument(string[] document)
         {
-            var issuedOn = DateTime.ParseExact(document[0].Split(' ')[0], "dd.mm.yyyy", _localCulture);
+            var issuedOn = DateTime.ParseExact(document[0].Split(' ')[0], "dd.mm.yyyy",  _localCulture);
             var records = new Dictionary<ExchangeRateRecordIndex, ExchangeRateRecord>();
             var currencies = new List<string>();
 
@@ -41,18 +40,18 @@ namespace STINProject_API.Services.ExchangeRateService
                     currencies.Add(split[3]);
                 }
 
-                var index = new ExchangeRateRecordIndex
-                {
-                    ExchangeFromCode = split[3],
-                    ExchangeToCode = _implicitCurrencyCode
+                var index = new ExchangeRateRecordIndex 
+                { 
+                    ExchangeFromCode = split[3], 
+                    ExchangeToCode = _implicitCurrencyCode 
                 };
-                var record = new ExchangeRateRecord
-                {
-                    Country = split[0],
-                    Currency = split[1],
-                    Quantity = int.Parse(split[2]),
-                    CountryCode = split[3],
-                    ExchangeRate = double.Parse(split[4])
+                var record = new ExchangeRateRecord 
+                { 
+                    Country = split[0], 
+                    Currency = split[1], 
+                    Quantity = int.Parse(split[2]), 
+                    CountryCode = split[3], 
+                    ExchangeRate = double.Parse(split[4]) 
                 };
                 records.Add(index, record);
             }

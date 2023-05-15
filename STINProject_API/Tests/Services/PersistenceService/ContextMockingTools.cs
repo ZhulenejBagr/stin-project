@@ -1,5 +1,5 @@
-﻿using Bogus;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Bogus;
 using Moq;
 using STINProject_API.Services.PersistenceService.Model;
 using STINProject_API.Services.PersistenceService.Models;
