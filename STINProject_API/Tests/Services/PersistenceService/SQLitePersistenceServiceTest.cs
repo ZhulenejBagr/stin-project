@@ -1,9 +1,4 @@
-﻿using Moq;
-using Xunit;
-using STINProject_API.Services.PersistenceService;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.Sqlite;
-using STINProject_API.Services.PersistenceService.Model;
+﻿using Xunit;
 
 namespace STINProject_API.Tests.Services.PersistenceService
 {

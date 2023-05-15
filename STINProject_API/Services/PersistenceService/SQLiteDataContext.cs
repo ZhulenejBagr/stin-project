@@ -23,7 +23,7 @@ namespace STINProject_API.Services.PersistenceService
         }
 
         public SQLiteDataContext(DbContextOptions<SQLiteDataContext> options) : base(options) { }
-        
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace STINProject_API.Services.ExchangeRateService
+﻿namespace STINProject_API.Services.ExchangeRateService
 {
     public class SimpleExchangeRateService : IExchangeRateService
     {

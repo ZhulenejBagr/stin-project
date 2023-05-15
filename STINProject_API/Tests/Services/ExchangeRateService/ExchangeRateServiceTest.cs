@@ -1,5 +1,4 @@
-﻿using Moq;
-using STINProject_API.Services.ExchangeRateService;
+﻿using STINProject_API.Services.ExchangeRateService;
 using Xunit;
 
 namespace STINProject_API.Tests.Services.ExchangeRateService

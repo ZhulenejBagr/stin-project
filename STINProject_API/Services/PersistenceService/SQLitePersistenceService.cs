@@ -33,7 +33,7 @@ namespace STINProject_API.Services.PersistenceService
         }
         public bool AddTransaction(Transaction transaction)
         {
-           return TryAddObject(transaction);
+            return TryAddObject(transaction);
         }
 
         public bool AddAccount(Account account)
@@ -46,7 +46,7 @@ namespace STINProject_API.Services.PersistenceService
             return TryAddObject(user);
         }
 
-        private bool TryAddObject(object obj) 
+        private bool TryAddObject(object obj)
         {
             var status = false;
             try
