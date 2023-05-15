@@ -32,10 +32,7 @@ namespace STINProject_API.Services.PersistenceService
 
             return _context.Users.First(x => x.Username == username);
         }
-        public bool AddTransaction(Transaction transaction)
-        {
-            return _context.Users.Single(x => x.Username == username);
-        }
+
         public bool AddTransaction(Transaction transaction)
         {
            return TryAddObject(transaction);
