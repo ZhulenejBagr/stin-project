@@ -1,6 +1,7 @@
 
 using STINProject_API.Services.ExchangeRateService;
 using STINProject_API.Services.PersistenceService;
+using STINProject_API.Services.TransactionService;
 
 namespace STINProject_API
 {
@@ -22,6 +23,8 @@ namespace STINProject_API
 
             builder.Services.AddSingleton<IExchangeRateService, SimpleExchangeRateService>();
             builder.Services.AddSingleton<IExchangeRateGetter, ExchangeRateGetter>();
+
+            builder.Services.AddSingleton<ITransactionService, SimpleTransactionService>();
 
             var app = builder.Build();
 
