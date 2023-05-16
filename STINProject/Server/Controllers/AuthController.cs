@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using STINProject.Server.Services.ExchangeRateService;
 using STINProject.Server.Services.PersistenceService;
 using STINProject.Server.Services.TransactionService;
+using STINProject.Shared;
 
 namespace STINProject.Server.Controllers
 {
@@ -21,9 +22,9 @@ namespace STINProject.Server.Controllers
         }
 
         [HttpGet]
-        public string Get()
+        public WeatherForecast Get()
         {
-            return "test";
+            return new WeatherForecast();
         }
     }
 }
