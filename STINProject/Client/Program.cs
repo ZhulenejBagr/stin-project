@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using STINProject.Client;
+using STINProject.Client.Services;
 
 namespace STINProject.Client
 {
@@ -13,6 +14,7 @@ namespace STINProject.Client
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new SavedSessionService(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }));
 
             await builder.Build().RunAsync();
         }

@@ -28,5 +28,11 @@ namespace STINProject.Server.Controllers
             }
             return Guid.Empty;
         }
+
+        [HttpGet("Session/{sessionId}")]
+        public bool VerifySession([FromRoute] Guid sessionId)
+        {
+            return _loginService.CheckAndUpdateSession(sessionId);
+        }
     }
 }

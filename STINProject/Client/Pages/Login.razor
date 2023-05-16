@@ -1,22 +1,43 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations;
+@using STINProject.Client.Services;
 @inject HttpClient Http
+@inject SavedSessionService SessionService
 
 <PageTitle>Login</PageTitle>
 <Form Model="@model" OnSubmit="@HandleSubmit">
-    <Text Label="Uživatelské jméno" id="Username" Disabled="false" @bind-Value="model.Username" />
-    <Password Label="Heslo" Disabled="false" @bind-Value="model.Password"></Password>
+    <DataAnnotationsValidator />
+    <Text Label="Uživatelské jméno" id="Username" Disabled="false" @bind-Value="model.Username" ValidationFor="() => model.Username" />
+    <Password Label="Heslo" Disabled="false" @bind-Value="model.Password" ValidationFor="() => model.Password"></Password>
     <Button type="submit">Přihlásit se</Button>
 </Form>
+@if (SessionValid == true)
+{
+    <Alert Type="AlertType.Success">
+        <AlertItem>
+            <AlertText>Úspěšně přihlášeni</AlertText>
+        </AlertItem>
+    </Alert>
+}
+else if (SessionValid == false)
+{
+    <Alert Type="AlertType.Warning">
+        <AlertItem>
+            <AlertText>Špatné přihlašovací údaje</AlertText>
+        </AlertItem>
+    </Alert>
+}
 
 @code {
     private LoginModel model = new();
     private Guid Session = Guid.Empty;
+    private bool? SessionValid = null;
 
     private async void HandleSubmit()
     {
         var route = $"Auth/Login/{model.Username}/{model.Password}";
         Session = await Http.GetFromJsonAsync<Guid>(route);
+        SessionValid = await SessionService.VerifySession();
     }
 
     protected override Task OnInitializedAsync()

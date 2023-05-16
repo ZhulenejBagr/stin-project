@@ -16,6 +16,10 @@ namespace STINProject.Server.Services.LoginService
         public bool CheckCredentials(string username, string password)
         {
             var user = _persistenceService.GetUser(username);
+            if (user is null)
+            {
+                return false;
+            }
             return user.Password == password;
         }
 
