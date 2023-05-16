@@ -27,7 +27,8 @@ namespace STINProject
 
             builder.Services.AddScoped<ITransactionService, SimpleTransactionService>();
 
-            builder.Services.AddScoped<ILoginService, SimpleLoginService>();
+            builder.Services.AddTransient<ILoginService, SimpleLoginService>();
+            builder.Services.AddSingleton<SessionStorage>();
 
             var app = builder.Build();
 

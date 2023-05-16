@@ -22,13 +22,18 @@ namespace STINProject.Server.Services.PersistenceService
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source=Database/banking.db");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite($"Data Source=Database/banking.db");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>()
+                .HasData(new User { Username = "sus", Password = "bus", Email = "sus@bus.com", UserId = Guid.NewGuid() });
             /*
             modelBuilder.Entity<Account>()
                 .HasOne(x => x.Owner)

@@ -12,7 +12,7 @@ namespace STINProject.Server.Services.LoginService
 
         public Session(User user) 
         {
-            SessionId = new Guid();
+            SessionId = Guid.NewGuid();
             ExpiresAt = DateTime.Now + TimeSpan.FromMinutes(10);
             User = user;
         }

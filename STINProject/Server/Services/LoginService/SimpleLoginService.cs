@@ -4,12 +4,12 @@ namespace STINProject.Server.Services.LoginService
 {
     public class SimpleLoginService : ILoginService
     {
-        private readonly ICollection<Session> _sessions;
+        private readonly SessionStorage _storage;
         private readonly IPersistenceService _persistenceService;
 
-        public SimpleLoginService(IPersistenceService persistenceService)
+        public SimpleLoginService(IPersistenceService persistenceService, SessionStorage storage)
         {
-            _sessions = new List<Session>();
+            _storage = storage;
             _persistenceService = persistenceService;
         }
 
@@ -29,7 +29,7 @@ namespace STINProject.Server.Services.LoginService
             if (user is not null)
             {
                 var session = new Session(user);
-                _sessions.Add(session);
+                _storage.Sessions.Add(session);
                 return session.SessionId;
             }
             return Guid.Empty;
@@ -37,7 +37,7 @@ namespace STINProject.Server.Services.LoginService
 
         public bool CheckAndUpdateSession(Guid sessionId)
         {
-            var session = _sessions.FirstOrDefault(s => s.SessionId == sessionId);
+            var session = _storage.Sessions.FirstOrDefault(s => s.SessionId == sessionId);
             if (session is not null)
             {
                 if (session.Valid)
