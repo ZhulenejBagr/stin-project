@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using STINProject.Server.Services.ExchangeRateService;
+using STINProject.Server.Services.LoginService;
 using STINProject.Server.Services.PersistenceService;
 using STINProject.Server.Services.TransactionService;
 using STINProject.Shared;
@@ -10,21 +11,22 @@ namespace STINProject.Server.Controllers
     [Route("Auth")]
     public class BankController : ControllerBase
     {
-        private readonly IExchangeRateService _exchangeRateService;
-        private readonly IPersistenceService _persistenceService;
-        private readonly ITransactionService _transactionService;
+        private readonly ILoginService _loginService;
 
-        public BankController(IExchangeRateService exchangeRateService, IPersistenceService persistenceService, ITransactionService transactionService)
+        public BankController(ILoginService loginService)
         {
-            _exchangeRateService = exchangeRateService;
-            _persistenceService = persistenceService;
-            _transactionService = transactionService;
+            _loginService = loginService;
         }
 
-        [HttpGet]
-        public WeatherForecast Get()
+        [HttpGet("Login/{username}/{password}")]
+        public Guid Login([FromRoute] string username, [FromRoute] string password)
         {
-            return new WeatherForecast();
+            if (_loginService.CheckCredentials(username, password))
+            {
+                var session = _loginService.CreateSession(username);
+                return session;
+            }
+            return Guid.Empty;
         }
     }
 }
