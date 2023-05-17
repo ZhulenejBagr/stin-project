@@ -23,13 +23,13 @@ namespace STINProject.Server.Services.PersistenceService
 
         public User GetUser(Guid id)
         {
-            return _context.Users.First(x => x.UserId == id);
+            return _context.Users.FirstOrDefault(x => x.UserId == id);
         }
 
         public User GetUser(string username)
         {
 
-            return _context.Users.First(x => x.Username == username);
+            return _context.Users.FirstOrDefault(x => x.Username == username);
         }
 
         public bool AddTransaction(Transaction transaction)

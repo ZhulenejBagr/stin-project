@@ -1,0 +1,117 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations;
+@using STINProject.Client.Services;
+@using STINProject.Shared;
+@inject HttpClient Http
+@inject SavedSessionService SessionService
+@inject NavigationManager NavManager
+
+<PageTitle>Login</PageTitle>
+
+<Form Model="@model" OnSubmit="@HandleLogin" Layout="FormLayout.Horizontal" >
+    <DataAnnotationsValidator />
+    <Text Label="Uživatelské jméno" id="Username" Disabled="false" @bind-Value="model.Username" ValidationFor="() => model.Username" />
+    <Password Label="Heslo" Disabled="false" @bind-Value="model.Password" ValidationFor="() => model.Password"></Password>
+    <Button type="submit">Přihlásit se</Button>
+</Form>
+
+
+@if (QRCode is not null)
+{
+    <p>Naskenujte si QR kód nebo opište textový kód do Google Authentificatoru nebo obdobné aplikace a opište z ní kód</p>
+    <img src="@QRCode" />
+    <p>@ManualCode</p>
+    <Form Model="@tfmodel" OnSubmit="@HandleTwoFactor" Layout="FormLayout.Horizontal" >
+        <DataAnnotationsValidator />
+        <Text Label="Kód" id="Code" Disabled="false" @bind-Value="tfmodel.Code" ValidationFor="() => tfmodel.Code" />
+        <Button type="submit">Potvrdit</Button>
+    </Form>
+}
+@if (SessionService.Session is not null && SessionService.Session.Valid)
+{
+    <Alert Type="AlertType.Success" >
+        <AlertItem>
+            <AlertText>Úspěšně přihlášeni</AlertText>
+        </AlertItem>
+    </Alert>
+}
+
+@if (TwoFactorError == true)
+{
+    <Alert Type="AlertType.Warning">
+        <AlertItem>
+            <AlertText>Špatný kód</AlertText>
+        </AlertItem>
+    </Alert>
+}
+
+
+@if (SessionValid == false)
+{
+    <Alert Type="AlertType.Warning">
+        <AlertItem>
+            <AlertText>Špatné přihlašovací údaje</AlertText>
+        </AlertItem>
+    </Alert>
+}
+
+@code {
+    private string route = "";
+    private LoginModel model = new();
+    private TwoFactorModel tfmodel = new();
+    private bool TwoFactorError = false;
+    private bool? SessionValid = null;
+    private string? QRCode = null;
+    private string? ManualCode = null;
+
+    private async void HandleLogin()
+    {
+        route = $"Auth/Login/{model.Username}/{model.Password}";
+        SessionService.Session = await Http.GetFromJsonAsync<Session>(route);
+        SessionValid = await SessionService.VerifySession();
+        if (SessionValid == true)
+        {
+            var wrapper = await Http.GetFromJsonAsync<SetupCodeWrapper>("Auth/Login/TwoFactor/Setup");
+            if (wrapper is not null)
+            {
+                QRCode = wrapper.QRCode;
+                ManualCode = wrapper.ManualCode;
+            }
+        }
+        StateHasChanged();
+    }
+
+    private async void HandleTwoFactor()
+    {
+        var result = await Http.GetFromJsonAsync<bool>($"Auth/Session/{SessionService.Session.SessionId}/{tfmodel.Code}");
+        if (result)
+        {
+            SessionService.Session.TwoFactorCompleted = true;
+            TwoFactorError = false;
+        }
+        else
+        {
+            TwoFactorError = true;
+        }
+        StateHasChanged();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    public class LoginModel 
+    {
+        [Required(ErrorMessage = "Uživatelské jméno nemůže být prázdné")]
+        public string? Username { get; set; }
+        [Required(ErrorMessage = "Heslo nemůže být prázdné")]
+        public string? Password { get; set; }
+    }
+
+    public class TwoFactorModel
+    {
+        [Required]
+        public string? Code { get; set; }
+    }
+}

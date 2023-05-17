@@ -1,5 +1,7 @@
+using Google.Authenticator;
 using Microsoft.AspNetCore.Mvc;
 using STINProject.Server.Services.ExchangeRateService;
+using STINProject.Server.Services.LoginService;
 using STINProject.Server.Services.PersistenceService;
 using STINProject.Server.Services.TransactionService;
 using STINProject.Shared;
@@ -10,21 +12,42 @@ namespace STINProject.Server.Controllers
     [Route("Auth")]
     public class BankController : ControllerBase
     {
-        private readonly IExchangeRateService _exchangeRateService;
-        private readonly IPersistenceService _persistenceService;
-        private readonly ITransactionService _transactionService;
-
-        public BankController(IExchangeRateService exchangeRateService, IPersistenceService persistenceService, ITransactionService transactionService)
+        private readonly ILoginService _loginService;
+        private readonly TwoFactorService _twoFactorService;
+        public BankController(ILoginService loginService, TwoFactorService twoFactorService)
         {
-            _exchangeRateService = exchangeRateService;
-            _persistenceService = persistenceService;
-            _transactionService = transactionService;
+            _loginService = loginService;
+            _twoFactorService = twoFactorService;
         }
 
-        [HttpGet]
-        public WeatherForecast Get()
+        [HttpGet("Login/{username}/{password}")]
+        public Session Login([FromRoute] string username, [FromRoute] string password)
         {
-            return new WeatherForecast();
+            if (_loginService.CheckCredentials(username, password))
+            {
+                var session = _loginService.CreateSession(username);
+                return session;
+            }
+            return new Session();
+        }
+
+        [HttpGet("Login/TwoFactor/Setup")]
+        public SetupCodeWrapper GetSetupCode()
+        {
+            var code = _twoFactorService.GetSetupCode();
+            return new SetupCodeWrapper() { QRCode = code.QrCodeSetupImageUrl, ManualCode = code.ManualEntryKey };
+        }
+
+        [HttpGet("Session/{sessionId}/{code}")]
+        public bool VerifyCode([FromRoute] Guid sessionId, [FromRoute] string code)
+        {
+            return _loginService.VerifyTwoFactor(sessionId, code);
+        }
+
+        [HttpGet("Session/{sessionId}")]
+        public bool VerifySession([FromRoute] Guid sessionId)
+        {
+            return _loginService.CheckAndUpdateSession(sessionId);
         }
     }
 }

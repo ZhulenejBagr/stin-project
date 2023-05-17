@@ -9,29 +9,31 @@ namespace STINProject.Server.Services.PersistenceService
         public DbSet<Account> Accounts { get; private set; }
         public DbSet<User> Users { get; private set; }
 
-        private readonly string _connectionString = string.Empty;
+        //private readonly string _connectionString = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "banking.db");
         public SQLiteDataContext()
         {
             // TODO add hidden prod connection string
-            _connectionString = "Data Source=c:\\mydb.db;Version=3;";
-        }
-
-        public SQLiteDataContext(string connectionString)
-        {
-            _connectionString = connectionString;
+            //var folder = Environment.SpecialFolder.LocalApplicationData;
+            //var path = Environment.GetFolderPath(folder);
+            //_connectionString = Path.Combine(path, "banking.db");
         }
 
         public SQLiteDataContext(DbContextOptions<SQLiteDataContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_connectionString);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite($"Data Source=Database/banking.db");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>()
+                .HasData(new User { Username = "sus", Password = "bus", Email = "sus@bus.com", UserId = Guid.NewGuid() });
             /*
             modelBuilder.Entity<Account>()
                 .HasOne(x => x.Owner)
