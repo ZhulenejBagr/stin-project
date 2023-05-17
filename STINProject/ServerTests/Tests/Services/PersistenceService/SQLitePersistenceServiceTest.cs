@@ -82,14 +82,14 @@
         public void AddAccount_ShouldNotAddAccountWithUnknownUser()
         {
             var unknownUser = ContextMockingTools.SampleUsers(1).First();
-            var account = ContextMockingTools.SampleAccounts(1, unknownUser.UserId).First();
+            var account = ContextMockingTools.SampleAccounts(1, unknownUser.UserId, new string[] { "GBP" }).First();
             Assert.False(_fixture.InMemoryService.AddAccount(account));
         }
 
         [Fact, TestPriority(11)]
         public void AddTransaction_ShouldNotAddTransactionWithUnknownAccount()
         {
-            var unknownAccount = ContextMockingTools.SampleAccounts(1, _fixture.TestUser.UserId).First();
+            var unknownAccount = ContextMockingTools.SampleAccounts(1, _fixture.TestUser.UserId, new string[] { "GBP" }).First();
             var transaction = ContextMockingTools.SampleTransactions(1, unknownAccount.AccountId).First();
             Assert.False(_fixture.InMemoryService.AddTransaction(transaction));
         }

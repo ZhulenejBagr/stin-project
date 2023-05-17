@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace STINProject.Server.Services.PersistenceService.Models
 {
+    [ExcludeFromCodeCoverage]
     public class User
     {
         [Key]

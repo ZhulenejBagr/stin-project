@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace STINProject.Server.Services.PersistenceService.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Transaction
     {
         [Key]

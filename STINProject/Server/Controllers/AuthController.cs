@@ -5,9 +5,11 @@ using STINProject.Server.Services.LoginService;
 using STINProject.Server.Services.PersistenceService;
 using STINProject.Server.Services.TransactionService;
 using STINProject.Shared;
+using System.Diagnostics.CodeAnalysis;
 
 namespace STINProject.Server.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [ApiController]
     [Route("Auth")]
     public class BankController : ControllerBase
