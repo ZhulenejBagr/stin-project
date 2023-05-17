@@ -1,7 +1,7 @@
 ﻿using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace STINProject.Server.Tests
+namespace ServerTests.Tests
 {
     public class PriorityOrderer : ITestCaseOrderer
     {

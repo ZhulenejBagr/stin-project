@@ -1,4 +1,4 @@
-﻿namespace STINProject.Server.Tests
+﻿namespace ServerTests.Tests
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class TestPriorityAttribute : Attribute

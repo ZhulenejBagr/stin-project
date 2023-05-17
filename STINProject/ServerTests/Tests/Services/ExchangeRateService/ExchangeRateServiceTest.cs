@@ -2,7 +2,7 @@
 using STINProject.Server.Services.ExchangeRateService;
 using Xunit;
 
-namespace STINProject.Server.Tests.Services.ExchangeRateService
+namespace ServerTests.Tests.Services.ExchangeRateService
 {
     [TestCaseOrderer("STINProject_API.Tests.PriorityOrderer", "STINProject_API")]
     public class ExchangeRateServiceTest : IClassFixture<ExchangeRateFixture>

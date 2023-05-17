@@ -1,7 +1,7 @@
 ﻿using Moq;
 using STINProject.Server.Services.ExchangeRateService;
 
-namespace STINProject.Server.Tests.Services.ExchangeRateService
+namespace ServerTests.Tests.Services.ExchangeRateService
 {
     public class ExchangeRateFixture : IDisposable
     {

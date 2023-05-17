@@ -2,10 +2,11 @@
 using Xunit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using STINProject.Server.Tests;
 
-namespace STINProject.Server.Tests.Services.PersistenceService
+namespace ServerTests.Tests.Services.PersistenceService
 {
-    [TestCaseOrderer("STINProject.Server.Tests.PriorityOrderer", "STINProject.Server")]
+    [TestCaseOrderer("STINProject.ServerTests.Tests.PriorityOrderer", "STINProject.ServerTests")]
     public class SQLitePersistenceServiceTest : IClassFixture<DatabaseFixture>
     {
         private readonly DatabaseFixture _fixture;

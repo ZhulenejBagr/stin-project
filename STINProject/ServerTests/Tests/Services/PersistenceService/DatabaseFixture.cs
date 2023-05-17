@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using STINProject.Server.Services.PersistenceService;
 using STINProject.Server.Services.PersistenceService.Models;
 
-namespace STINProject.Server.Tests.Services.PersistenceService
+namespace ServerTests.Tests.Services.PersistenceService
 {
     public class DatabaseFixture : IDisposable
     {
