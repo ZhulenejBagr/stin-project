@@ -1,4 +1,5 @@
 using Google.Authenticator;
+using Hangfire.AspNetCore;
 using Microsoft.AspNetCore.ResponseCompression;
 using STINProject.Server.Services.ExchangeRateService;
 using STINProject.Server.Services.LoginService;
@@ -31,6 +32,12 @@ namespace STINProject
             builder.Services.AddTransient<ILoginService, SimpleLoginService>();
             builder.Services.AddSingleton<SessionStorage>();
             builder.Services.AddScoped<TwoFactorService>();
+            builder.Services.AddScoped<TwoFactorAuthenticator>();
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+            builder.Services.AddSingleton(configuration);
 
             var app = builder.Build();
 
