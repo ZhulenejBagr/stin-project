@@ -4,7 +4,7 @@ using Xunit;
 
 namespace ServerTests.Tests.Services.ExchangeRateService
 {
-    [TestCaseOrderer("STINProject_API.Tests.PriorityOrderer", "STINProject_API")]
+    [TestCaseOrderer("ServerTests.PriorityOrderer", "ServerTests")]
     public class ExchangeRateServiceTest : IClassFixture<ExchangeRateFixture>
     {
         private readonly ExchangeRateFixture _fixture;
