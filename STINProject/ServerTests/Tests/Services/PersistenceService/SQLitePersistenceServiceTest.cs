@@ -1,12 +1,6 @@
-﻿using Moq;
-using Xunit;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.Sqlite;
-using STINProject.Server.Tests;
-
-namespace ServerTests.Tests.Services.PersistenceService
+﻿namespace ServerTests.Tests.Services.PersistenceService
 {
-    [TestCaseOrderer("STINProject.ServerTests.Tests.PriorityOrderer", "STINProject.ServerTests")]
+    [TestCaseOrderer("ServerTests.Tests.PriorityOrderer", "ServerTests")]
     public class SQLitePersistenceServiceTest : IClassFixture<DatabaseFixture>
     {
         private readonly DatabaseFixture _fixture;
@@ -98,6 +92,28 @@ namespace ServerTests.Tests.Services.PersistenceService
             var unknownAccount = ContextMockingTools.SampleAccounts(1, _fixture.TestUser.UserId).First();
             var transaction = ContextMockingTools.SampleTransactions(1, unknownAccount.AccountId).First();
             Assert.False(_fixture.InMemoryService.AddTransaction(transaction));
+        }
+
+        [Fact, TestPriority(12)]
+        public void GetUser_ShouldGetUser_WhenCorrectNameIsProvided()
+        {
+            var user = _fixture.TestUser;
+            var username = user.Username;
+            Assert.Equal(user, _fixture.InMemoryService.GetUser(username));
+        }
+
+        [Fact, TestPriority(13)]
+        public void GetUser_ShouldReturnNull_WhenUnknownUserIdIsProvided()
+        {
+            var unknownId = Guid.Empty;
+            Assert.Null(_fixture.InMemoryService.GetUser(unknownId));
+        }
+
+        [Fact, TestPriority(14)]
+        public void GetUser_ShouldReturnNull_WhenUnknownUsernameIsProvided()
+        {
+            var unknownUsername = string.Empty;
+            Assert.Null(_fixture.InMemoryService.GetUser(unknownUsername));
         }
     }
 }
