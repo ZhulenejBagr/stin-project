@@ -1,3 +1,4 @@
+using Google.Authenticator;
 using Microsoft.AspNetCore.ResponseCompression;
 using STINProject.Server.Services.ExchangeRateService;
 using STINProject.Server.Services.LoginService;
@@ -29,6 +30,7 @@ namespace STINProject
 
             builder.Services.AddTransient<ILoginService, SimpleLoginService>();
             builder.Services.AddSingleton<SessionStorage>();
+            builder.Services.AddScoped<TwoFactorService>();
 
             var app = builder.Build();
 

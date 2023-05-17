@@ -1,4 +1,6 @@
-﻿namespace STINProject.Server.Services.LoginService
+﻿using STINProject.Shared;
+
+namespace STINProject.Server.Services.LoginService
 {
     public class SessionStorage
     {

@@ -1,3 +1,4 @@
+using Google.Authenticator;
 using Microsoft.AspNetCore.Mvc;
 using STINProject.Server.Services.ExchangeRateService;
 using STINProject.Server.Services.LoginService;
@@ -12,21 +13,35 @@ namespace STINProject.Server.Controllers
     public class BankController : ControllerBase
     {
         private readonly ILoginService _loginService;
-
-        public BankController(ILoginService loginService)
+        private readonly TwoFactorService _twoFactorService;
+        public BankController(ILoginService loginService, TwoFactorService twoFactorService)
         {
             _loginService = loginService;
+            _twoFactorService = twoFactorService;
         }
 
         [HttpGet("Login/{username}/{password}")]
-        public Guid Login([FromRoute] string username, [FromRoute] string password)
+        public Session Login([FromRoute] string username, [FromRoute] string password)
         {
             if (_loginService.CheckCredentials(username, password))
             {
                 var session = _loginService.CreateSession(username);
                 return session;
             }
-            return Guid.Empty;
+            return new Session();
+        }
+
+        [HttpGet("Login/TwoFactor/Setup")]
+        public SetupCodeWrapper GetSetupCode()
+        {
+            var code = _twoFactorService.GetSetupCode();
+            return new SetupCodeWrapper() { QRCode = code.QrCodeSetupImageUrl, ManualCode = code.ManualEntryKey };
+        }
+
+        [HttpGet("Session/{sessionId}/{code}")]
+        public bool VerifyCode([FromRoute] Guid sessionId, [FromRoute] string code)
+        {
+            return _loginService.VerifyTwoFactor(sessionId, code);
         }
 
         [HttpGet("Session/{sessionId}")]
