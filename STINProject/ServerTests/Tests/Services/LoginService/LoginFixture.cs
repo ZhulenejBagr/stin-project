@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 ﻿using Google.Authenticator;
 using Moq;
-=======
-﻿using Moq;
->>>>>>> b1c9a11afcfb58fe9db69cd7590fb0769dd3447a
 using ServerTests.Tests.Services.PersistenceService;
 using STINProject.Server.Services.LoginService;
 using STINProject.Server.Services.PersistenceService;
@@ -20,18 +16,14 @@ namespace ServerTests.Tests.Services.LoginService
     {
         public ILoginService ServiceUnderTest { get; init; }
         private readonly IPersistenceService _persistenceService;
-<<<<<<< HEAD
         private readonly SessionStorage _sessionStorage;
         private readonly TwoFactorService _twoFactorService;
-=======
->>>>>>> b1c9a11afcfb58fe9db69cd7590fb0769dd3447a
         public IEnumerable<User> Users { get; init; }
 
         public LoginFixture()
         {
             Users = ContextMockingTools.SampleUsers(3);
 
-<<<<<<< HEAD
             var persistenceMock = new Mock<IPersistenceService>();
             persistenceMock
                 .Setup(x => x.GetUser(It.IsAny<string>()))
@@ -45,12 +37,10 @@ namespace ServerTests.Tests.Services.LoginService
             _twoFactorService = new TwoFactorService(authenticator);
             
             
-=======
             var loginMock = new Mock<IPersistenceService>();
             loginMock
                 .Setup(x => x.GetUser(It.IsAny<string>()))
                 .Returns((string username) => Users.FirstOrDefault(x => x.Username == username));
->>>>>>> b1c9a11afcfb58fe9db69cd7590fb0769dd3447a
         }
     }
 }

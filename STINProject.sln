@@ -9,11 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STINProject.Client", "STINP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STINProject.Shared", "STINProject\Shared\STINProject.Shared.csproj", "{05841FB0-2079-41A8-B3DE-D92C4DAAD880}"
 EndProject
-<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTests", "STINProject\ServerTests\ServerTests.csproj", "{01D6C5F7-E76D-4DD1-A9AC-AA8736DDF131}"
-=======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTests", "STINProject\ServerTests\ServerTests.csproj", "{01D6C5F7-E76D-4DD1-A9AC-AA8736DDF131}"
->>>>>>> b1c9a11afcfb58fe9db69cd7590fb0769dd3447a
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
