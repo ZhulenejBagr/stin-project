@@ -34,7 +34,17 @@ namespace STINProject.Server.Services.PersistenceService
 
         public bool AddTransaction(Transaction transaction)
         {
-            return TryAddObject(transaction);
+            var result = TryAddObject(transaction);
+            if (result)
+            {
+                var account = _context.Accounts.FirstOrDefault(x => transaction.AccountID == x.AccountId);
+                if (account != null)
+                {
+                    account.Balance += transaction.Value;
+                    _context.SaveChanges();
+                }
+            }
+            return result;
         }
 
         public bool AddAccount(Account account)

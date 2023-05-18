@@ -41,7 +41,7 @@ namespace STINProject.Server.Services.ExchangeRateService
         {
             var issuedOn = DateTime.ParseExact(document[0].Split(' ')[0], "dd.mm.yyyy", _localCulture);
             var records = new Dictionary<ExchangeRateRecordIndex, ExchangeRateRecord>();
-            var currencies = new List<string>();
+            var currencies = new List<string>() { "CZK" };
 
             var dataLines = document[2..^2];
             foreach (var line in dataLines)

@@ -1,10 +1,12 @@
 ﻿using Google.Authenticator;
 using STINProject.Server.Services.PersistenceService;
 using STINProject.Shared;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace STINProject.Server.Services.LoginService
 {
+    [ExcludeFromCodeCoverage]
     public class SimpleLoginService : ILoginService
     {
         private readonly SessionStorage _storage;
