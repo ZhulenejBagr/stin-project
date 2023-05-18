@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace STINProject.Server.Services.ExchangeRateService
 {
@@ -13,7 +15,12 @@ namespace STINProject.Server.Services.ExchangeRateService
 
         public ExchangeRateGetter()
         {
-            _savedDocument = ParseExchangeDocument(RequestDocument().Result);
+            GetDocumentAndSave();
+            var times = Enumerable.Range(0, 10).Select(x => $"{30 + x} 14 * * *").ToArray();
+            for (var i = 0; i < times.Length; i++)
+            {
+                RecurringJob.AddOrUpdate($"get-exchange-doc-{i}", () => GetDocumentAndSave(), times[i]);
+            }
         }
         private static async Task<string[]> RequestDocument()
         {
@@ -23,6 +30,11 @@ namespace STINProject.Server.Services.ExchangeRateService
             var lines = website.Split("\n");
 
             return lines;
+        }
+
+        public void GetDocumentAndSave()
+        {
+            _savedDocument = ParseExchangeDocument(RequestDocument().Result);
         }
 
         private static ExchangeRateDocument ParseExchangeDocument(string[] document)

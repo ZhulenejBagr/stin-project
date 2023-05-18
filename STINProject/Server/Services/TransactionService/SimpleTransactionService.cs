@@ -23,6 +23,10 @@ namespace STINProject.Server.Services.TransactionService
             }
 
             var userAccounts = _persistenceService.GetAccounts(userId);
+            if (!userAccounts.Any()) 
+            {
+                return false;
+            }
             var currencyMatch = userAccounts.Where(x => x.Currency == currencyCode).ToList();
             var currenyNonMatch = userAccounts.Where(x => x.Currency != currencyCode).ToList();
 
@@ -34,25 +38,31 @@ namespace STINProject.Server.Services.TransactionService
                 return true;
             }
 
-            foreach (var account in currencyMatch)
+            if (currencyMatch.Any())
             {
-                if (account.Balance + quantity >= 0)
+                foreach (var account in currencyMatch)
                 {
-                    var transaction = new Transaction { AccountID = account.AccountId, Date = DateTime.Now, Value = quantity };
-                    _persistenceService.AddTransaction(transaction);
-                    return true;
+                    if (account.Balance + quantity >= 0)
+                    {
+                        var transaction = new Transaction { AccountID = account.AccountId, Date = DateTime.Now, Value = quantity };
+                        _persistenceService.AddTransaction(transaction);
+                        return true;
+                    }
                 }
             }
 
-            foreach (var account in currenyNonMatch)
+            if (currenyNonMatch.Any())
             {
-                var converted = _exchangeRateService.ExchangeCurrency(quantity, currencyCode, account.Currency);
-
-                if (account.Balance + converted >= 0)
+                foreach (var account in currenyNonMatch)
                 {
-                    var transaction = new Transaction { AccountID = account.AccountId, Date = DateTime.Now, Value = converted };
-                    _persistenceService.AddTransaction(transaction);
-                    return true;
+                    var converted = _exchangeRateService.ExchangeCurrency(quantity, currencyCode, account.Currency);
+
+                    if (account.Balance + converted >= 0)
+                    {
+                        var transaction = new Transaction { AccountID = account.AccountId, Date = DateTime.Now, Value = converted };
+                        _persistenceService.AddTransaction(transaction);
+                        return true;
+                    }
                 }
             }
 

@@ -3,7 +3,7 @@ using Bogus;
 using Moq;
 using STINProject.Server.Services.PersistenceService.Models;
 
-namespace STINProject.Server.Tests.Services.PersistenceService
+namespace ServerTests.Tests.Services.PersistenceService
 {
     public static class ContextMockingTools
     {
@@ -18,11 +18,12 @@ namespace STINProject.Server.Tests.Services.PersistenceService
             return faker.Generate(count);
         }
 
-        public static IEnumerable<Account> SampleAccounts(int count, Guid userId)
+        public static IEnumerable<Account> SampleAccounts(int count, Guid userId, IEnumerable<string> suppotedCodes)
         {
+            var random = new Random();
             var faker = new Faker<Account>()
                 .RuleFor(x => x.Balance, x => (double)x.Finance.Amount())
-                .RuleFor(x => x.Currency, x => x.Finance.Currency().ToString())
+                .RuleFor(x => x.Currency, x => suppotedCodes.ElementAt(random.Next(0, suppotedCodes.Count())))
                 .RuleFor(x => x.OwnerId, x => userId)
                 .RuleFor(x => x.AccountId, x => Guid.NewGuid());
 

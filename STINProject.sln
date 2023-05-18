@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STINProject.Client", "STINP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STINProject.Shared", "STINProject\Shared\STINProject.Shared.csproj", "{05841FB0-2079-41A8-B3DE-D92C4DAAD880}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTests", "STINProject\ServerTests\ServerTests.csproj", "{01D6C5F7-E76D-4DD1-A9AC-AA8736DDF131}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{05841FB0-2079-41A8-B3DE-D92C4DAAD880}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05841FB0-2079-41A8-B3DE-D92C4DAAD880}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05841FB0-2079-41A8-B3DE-D92C4DAAD880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D6C5F7-E76D-4DD1-A9AC-AA8736DDF131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D6C5F7-E76D-4DD1-A9AC-AA8736DDF131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D6C5F7-E76D-4DD1-A9AC-AA8736DDF131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D6C5F7-E76D-4DD1-A9AC-AA8736DDF131}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

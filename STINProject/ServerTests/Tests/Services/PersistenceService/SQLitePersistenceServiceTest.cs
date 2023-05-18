@@ -1,11 +1,6 @@
-﻿using Moq;
-using Xunit;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.Sqlite;
-
-namespace STINProject.Server.Tests.Services.PersistenceService
+﻿namespace ServerTests.Tests.Services.PersistenceService
 {
-    [TestCaseOrderer("STINProject.Server.Tests.PriorityOrderer", "STINProject.Server")]
+    [TestCaseOrderer("ServerTests.Tests.PriorityOrderer", "ServerTests")]
     public class SQLitePersistenceServiceTest : IClassFixture<DatabaseFixture>
     {
         private readonly DatabaseFixture _fixture;
@@ -87,16 +82,38 @@ namespace STINProject.Server.Tests.Services.PersistenceService
         public void AddAccount_ShouldNotAddAccountWithUnknownUser()
         {
             var unknownUser = ContextMockingTools.SampleUsers(1).First();
-            var account = ContextMockingTools.SampleAccounts(1, unknownUser.UserId).First();
+            var account = ContextMockingTools.SampleAccounts(1, unknownUser.UserId, new string[] { "GBP" }).First();
             Assert.False(_fixture.InMemoryService.AddAccount(account));
         }
 
         [Fact, TestPriority(11)]
         public void AddTransaction_ShouldNotAddTransactionWithUnknownAccount()
         {
-            var unknownAccount = ContextMockingTools.SampleAccounts(1, _fixture.TestUser.UserId).First();
+            var unknownAccount = ContextMockingTools.SampleAccounts(1, _fixture.TestUser.UserId, new string[] { "GBP" }).First();
             var transaction = ContextMockingTools.SampleTransactions(1, unknownAccount.AccountId).First();
             Assert.False(_fixture.InMemoryService.AddTransaction(transaction));
+        }
+
+        [Fact, TestPriority(12)]
+        public void GetUser_ShouldGetUser_WhenCorrectNameIsProvided()
+        {
+            var user = _fixture.TestUser;
+            var username = user.Username;
+            Assert.Equal(user, _fixture.InMemoryService.GetUser(username));
+        }
+
+        [Fact, TestPriority(13)]
+        public void GetUser_ShouldReturnNull_WhenUnknownUserIdIsProvided()
+        {
+            var unknownId = Guid.Empty;
+            Assert.Null(_fixture.InMemoryService.GetUser(unknownId));
+        }
+
+        [Fact, TestPriority(14)]
+        public void GetUser_ShouldReturnNull_WhenUnknownUsernameIsProvided()
+        {
+            var unknownUsername = string.Empty;
+            Assert.Null(_fixture.InMemoryService.GetUser(unknownUsername));
         }
     }
 }

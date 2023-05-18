@@ -15,7 +15,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="GoogleAuthenticator" Version="3.1.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.0" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.0" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.0" />
+    <PackageReference Include="Hangfire.Storage.SQLite" Version="0.3.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.5" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.5" />
@@ -26,9 +31,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="Moq" Version="4.18.4" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.16.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.console" Version="2.4.2">
       <PrivateAssets>all</PrivateAssets>
@@ -42,10 +45,32 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\STINProject.Shared.csproj" />
+	<ProjectReference Include="..\Client\STINProject.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Database\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Database\banking.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\banking.db-shm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\banking.db-wal">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Database\hangfire.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

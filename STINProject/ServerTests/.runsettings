@@ -29,11 +29,12 @@ Included items must then not match any entries in the exclude list to remain inc
             <!-- Match assembly file paths: -->
             <ModulePaths>
               <Exclude>
-                <ModulePath>.*\.dll</ModulePath>
+                <ModulePath>.*\.dll$</ModulePath>
                 <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
               </Exclude>
               <Include>
-				  <ModulePath>STINProject.Server.*</ModulePath>
+                <ModulePath>*.STINProject.*</ModulePath>
+                <ModulePath>STINProject.*</ModulePath>
               </Include>
               <!-- Specifies additional list of directories where binaries static native instrumentation should be searched. -->
               <IncludeDirectories>

@@ -1,9 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using STINProject.Server.Services.PersistenceService;
 using STINProject.Server.Services.PersistenceService.Models;
 
-namespace STINProject.Server.Tests.Services.PersistenceService
+namespace ServerTests.Tests.Services.PersistenceService
 {
     public class DatabaseFixture : IDisposable
     {
@@ -14,7 +15,7 @@ namespace STINProject.Server.Tests.Services.PersistenceService
         public DatabaseFixture()
         {
             TestUser = ContextMockingTools.SampleUsers(1).First();
-            TestAccounts = ContextMockingTools.SampleAccounts(3, TestUser.UserId);
+            TestAccounts = ContextMockingTools.SampleAccounts(3, TestUser.UserId, new string[] { "USD", "GBP" } );
             TestTransactions = ContextMockingTools.SampleTransactions(5, TestAccounts.First().AccountId);
 
             var connection = new SqliteConnection("Data Source =:memory:;");
@@ -24,7 +25,7 @@ namespace STINProject.Server.Tests.Services.PersistenceService
                 .UseSqlite(connection)
                 .Options;
 
-            var context = new SQLiteDataContext(options);
+            var context = new SQLiteDataContext(new ConfigurationManager(), options);
 
             if (context != null)
             {

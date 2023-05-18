@@ -1,7 +1,9 @@
 ﻿using STINProject.Server.Services.ExchangeRateService;
+using System.Diagnostics.CodeAnalysis;
 
 namespace STINProject.Server.Services.ExchangeRateService
 {
+    [ExcludeFromCodeCoverage]
     public class ExchangeRateDocument
     {
         public bool Valid { get; private set; }

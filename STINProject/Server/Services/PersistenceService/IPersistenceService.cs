@@ -1,4 +1,5 @@
 ﻿using STINProject.Server.Services.PersistenceService.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace STINProject.Server.Services.PersistenceService
 {

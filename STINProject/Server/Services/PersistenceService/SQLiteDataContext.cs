@@ -1,30 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using STINProject.Server.Services.PersistenceService.Models;
 
 namespace STINProject.Server.Services.PersistenceService
 {
     public class SQLiteDataContext : DbContext
     {
+        public IConfiguration _config;
         public DbSet<Transaction> Transactions { get; private set; }
         public DbSet<Account> Accounts { get; private set; }
         public DbSet<User> Users { get; private set; }
 
         //private readonly string _connectionString = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "banking.db");
-        public SQLiteDataContext()
+        public SQLiteDataContext(IConfiguration config)
         {
+            _config = config;
             // TODO add hidden prod connection string
             //var folder = Environment.SpecialFolder.LocalApplicationData;
             //var path = Environment.GetFolderPath(folder);
             //_connectionString = Path.Combine(path, "banking.db");
         }
 
-        public SQLiteDataContext(DbContextOptions<SQLiteDataContext> options) : base(options) { }
+        public SQLiteDataContext(IConfiguration config, DbContextOptions<SQLiteDataContext> options) : base(options) 
+        {
+            _config = config;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite($"Data Source=Database/banking.db");
+                var cstring = _config.GetConnectionString("SQLite");
+                optionsBuilder.UseSqlite(cstring);
             }
         }
 

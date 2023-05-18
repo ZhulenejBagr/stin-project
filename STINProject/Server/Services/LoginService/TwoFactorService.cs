@@ -8,9 +8,9 @@ namespace STINProject.Server.Services.LoginService
         private static readonly byte[] _sskey = Encoding.UTF8.GetBytes("la biblioteka");
         private readonly string _appName = "Banking app";
         private readonly TwoFactorAuthenticator _authenticator;
-        public TwoFactorService() 
+        public TwoFactorService(TwoFactorAuthenticator authenticator) 
         { 
-            _authenticator = new TwoFactorAuthenticator();
+            _authenticator = authenticator;
         }
 
         public SetupCode GetSetupCode()
