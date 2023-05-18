@@ -33,8 +33,12 @@ Included items must then not match any entries in the exclude list to remain inc
                 <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
               </Exclude>
               <Include>
+<<<<<<< HEAD
+                <ModulePath>STINProject.Server*</ModulePath>
+=======
                 <ModulePath>*.STINProject.*</ModulePath>
                 <ModulePath>STINProject.*</ModulePath>
+>>>>>>> b1c9a11afcfb58fe9db69cd7590fb0769dd3447a
               </Include>
               <!-- Specifies additional list of directories where binaries static native instrumentation should be searched. -->
               <IncludeDirectories>

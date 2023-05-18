@@ -1,0 +1,127 @@
+﻿@page "/accounts"
+@using STINProject.Client.Services;
+@using STINProject.Shared
+@inject SavedSessionService SessionService
+@inject HttpClient Http
+<h3>Accounts</h3>
+
+
+@if (accounts is null)
+{
+    <p><em>Načítání účtů...</em></p>
+}
+else if (accounts is not null && !accounts.Any())
+{
+    <p><em>Žádné dostupné účty</em></p>
+}
+else
+{
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Měna</th>
+                <th>Zůstatek</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in accounts)
+            {
+                <tr>
+                    <td>@emp.AccountId</td>
+                    <td>@emp.Currency</td>
+                    <td>@emp.Balance</td>
+                </tr>
+
+              
+            }
+        </tbody>
+    </table>
+    
+    <p>Přidání transakce</p>
+    <Form Model="@input" OnSubmit="@AddTransaction" Layout="FormLayout.Horizontal" >
+        <DataAnnotationsValidator />
+        <Text Label="Zkratka měny" id="code" Disabled="false" @bind-Value="input.CurrencyCode" ValidationFor="() => input.CurrencyCode" />
+        <Text Label="Hodnota" id="code" Disabled="false" @bind-Value="input.Value" ValidationFor="() => input.Value" />
+        <Button type="submit">Potvrdit</Button>
+    </Form>
+
+
+    @foreach (var acc in accounts)
+    {
+        <p>Tabulka transackí pro účet @acc.AccountId</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID transakce</th>
+                    <th>Datum provedení transakce</th>
+                    <th>Hodnota transakce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var trans in transactions[acc])
+                {
+                    <tr>
+                        <td>@trans.TranscationId</td>
+                        <td>@trans.Date</td>
+                        <td>@trans.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+
+
+
+@code {
+    private TransactionInputModel input = new();
+    private bool? transactionAdded;
+    private IEnumerable<AccountModel>? accounts;
+    private IDictionary<AccountModel, IEnumerable<TransactionViewModel>>? transactions;
+
+    private async void AddTransaction()
+    {
+        var result = await Http.GetFromJsonAsync<bool>($"Account/Transactions/AddTransaction/{SessionService.Session.UserId}/{input.CurrencyCode}/{input.Value}");
+        if (result)
+        {
+            transactionAdded = true;
+        }
+        else
+        {
+            transactionAdded = false;
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (SessionService.Session is not null && SessionService.Session.Valid)
+        {
+            transactions = new Dictionary<AccountModel, IEnumerable<TransactionViewModel>>();
+            accounts = await Http.GetFromJsonAsync<IEnumerable<AccountModel>>($"Account/{SessionService.Session.UserId}");
+
+            if (accounts is null)
+            {
+                return;
+            }
+
+            foreach (var account in accounts)
+            {
+                if (account is null)
+                {
+                    continue;
+                }
+
+                var trans = await Http.GetFromJsonAsync<IEnumerable<TransactionViewModel>>($"Account/Transactions/{account.AccountId}");
+                if (trans is not null)
+                {
+                    transactions[account] = trans;
+                }
+            }
+        }
+        
+    }
+
+}

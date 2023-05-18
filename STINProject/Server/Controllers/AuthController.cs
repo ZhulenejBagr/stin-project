@@ -1,9 +1,5 @@
-using Google.Authenticator;
 using Microsoft.AspNetCore.Mvc;
-using STINProject.Server.Services.ExchangeRateService;
 using STINProject.Server.Services.LoginService;
-using STINProject.Server.Services.PersistenceService;
-using STINProject.Server.Services.TransactionService;
 using STINProject.Shared;
 using System.Diagnostics.CodeAnalysis;
 
