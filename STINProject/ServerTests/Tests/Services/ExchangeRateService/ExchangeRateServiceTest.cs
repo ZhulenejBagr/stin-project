@@ -38,13 +38,13 @@ namespace ServerTests.Tests.Services.ExchangeRateService
         public void ExchangeCurrency_ShouldExchangeCurrency_WhenAlternateExchangeExists()
         {
             var recordIndex = new ExchangeRateRecordIndex { ExchangeFromCode = "GBP", ExchangeToCode = "USD" };
-            var firstIndex = new ExchangeRateRecordIndex { ExchangeFromCode = "CZK", ExchangeToCode = "GBP" };
-            var secondIndex = new ExchangeRateRecordIndex { ExchangeFromCode = "CZK", ExchangeToCode = "USD" };
+            var firstIndex = new ExchangeRateRecordIndex { ExchangeFromCode = "GBP", ExchangeToCode = "CZK" };
+            var secondIndex = new ExchangeRateRecordIndex { ExchangeFromCode = "USD", ExchangeToCode = "CZK" };
 
             var firstRecord = _fixture.Document.ExchangeRecords[firstIndex];
             var secondRecord = _fixture.Document.ExchangeRecords[secondIndex];
             var inputValue = 50;
-            var expectedValue = firstRecord.Quantity / firstRecord.ExchangeRate * secondRecord.ExchangeRate / secondRecord.Quantity * inputValue;
+            var expectedValue = firstRecord.ExchangeRate / firstRecord.Quantity * secondRecord.Quantity / secondRecord.ExchangeRate * inputValue;
             Assert.Equal(expectedValue, _fixture.ServiceUnderTest.ExchangeCurrency(inputValue, firstRecord.CountryCode, secondRecord.CountryCode));
         }
 

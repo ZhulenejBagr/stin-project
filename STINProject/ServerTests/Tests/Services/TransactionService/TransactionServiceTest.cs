@@ -64,5 +64,27 @@
             account1.Balance = 1000;
             Assert.True(_fixture.ServiceUnderTest.TryExecuteTransaction(userId, "CZK", -25));
         }
+
+        [Fact]
+        public void TryExecuteTransaction_ShouldBeTrue_WhenUserHasAccountWithMatchingCurrencyAndEnoughForOneTimeCharge()
+        {
+            var userId = _fixture.Users[0].UserId;
+            var account1 = _fixture.Accounts[0];
+            account1.Balance = 25;
+            Assert.True(_fixture.ServiceUnderTest.TryExecuteTransaction(userId, "CZK", -27));
+        }
+
+        [Fact]
+        public void TryExecuteTransanction_ShouldBeTrue_WhenUserHasAccountWithoutMatchingCurrencyAndEnoughForOneTimeCharge()
+        {
+            var userId = _fixture.Users[0].UserId;
+            var account1 = _fixture.Accounts[0];
+            account1.Currency = "CZK";
+            account1.Balance = 0;
+            var account2 = _fixture.Accounts[1];
+            account2.Currency = "GBP";
+            account2.Balance = 10;
+            Assert.True(_fixture.ServiceUnderTest.TryExecuteTransaction(userId, "CZK", -10.5 / 25.9));
+        }
     }
 }

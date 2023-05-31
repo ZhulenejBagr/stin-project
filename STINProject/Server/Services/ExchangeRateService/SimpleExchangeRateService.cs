@@ -27,13 +27,13 @@ namespace STINProject.Server.Services.ExchangeRateService
             }
             else
             {
-                foreach (var frecord in doc.ExchangeRecords.Where(x => x.Key.ExchangeToCode == currencyCodeTo))
+                foreach (var frecord in doc.ExchangeRecords.Where(x => x.Key.ExchangeFromCode == currencyCodeTo))
                 {
-                    foreach (var srecord in doc.ExchangeRecords.Where(x => x.Key.ExchangeToCode == currencyCodeFrom))
+                    foreach (var srecord in doc.ExchangeRecords.Where(x => x.Key.ExchangeFromCode == currencyCodeFrom))
                     {
-                        if (frecord.Key.ExchangeFromCode == srecord.Key.ExchangeFromCode)
+                        if (frecord.Key.ExchangeToCode == srecord.Key.ExchangeToCode)
                         {
-                            return (srecord.Value.Quantity / srecord.Value.ExchangeRate) * (frecord.Value.ExchangeRate / frecord.Value.Quantity) * exchangeValue;
+                            return (srecord.Value.ExchangeRate / srecord.Value.Quantity) * (frecord.Value.Quantity / frecord.Value.ExchangeRate) * exchangeValue;
                         }
                     }
                 }
