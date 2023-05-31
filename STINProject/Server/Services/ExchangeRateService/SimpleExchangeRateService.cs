@@ -33,7 +33,7 @@ namespace STINProject.Server.Services.ExchangeRateService
                     {
                         if (frecord.Key.ExchangeFromCode == srecord.Key.ExchangeFromCode)
                         {
-                            return srecord.Value.Quantity / srecord.Value.ExchangeRate * frecord.Value.ExchangeRate / frecord.Value.Quantity * exchangeValue;
+                            return (srecord.Value.Quantity / srecord.Value.ExchangeRate) * (frecord.Value.ExchangeRate / frecord.Value.Quantity) * exchangeValue;
                         }
                     }
                 }
