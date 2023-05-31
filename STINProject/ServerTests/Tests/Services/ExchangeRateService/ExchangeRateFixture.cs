@@ -24,11 +24,11 @@ namespace ServerTests.Tests.Services.ExchangeRateService
             var records = new Dictionary<ExchangeRateRecordIndex, ExchangeRateRecord>
             {
                 {
-                    new ExchangeRateRecordIndex { ExchangeFromCode = currencies[0], ExchangeToCode = currencies[1] },
+                    new ExchangeRateRecordIndex { ExchangeFromCode = currencies[1], ExchangeToCode = currencies[0] },
                     new ExchangeRateRecord { Country = countries[0], CountryCode = currencies[1], ExchangeRate = 22.1, Currency = "dolar", Quantity = 1 }
                 },
                 {
-                    new ExchangeRateRecordIndex { ExchangeFromCode = currencies[0], ExchangeToCode = currencies[2] },
+                    new ExchangeRateRecordIndex { ExchangeFromCode = currencies[2], ExchangeToCode = currencies[0] },
                     new ExchangeRateRecord { Country = countries[1], CountryCode = currencies[2], ExchangeRate = 27.1, Currency = "libra", Quantity = 1 }
                 }
             };

@@ -27,6 +27,7 @@ namespace STINProject
             builder.Services.AddScoped<IPersistenceService, SQLitePersistenceService>();
 
             builder.Services.AddScoped<IExchangeRateService, SimpleExchangeRateService>();
+            builder.Services.AddHttpClient<ExchangeRateDocumentGetter>();
 
             builder.Services.AddScoped<ITransactionService, SimpleTransactionService>();
 
@@ -50,8 +51,7 @@ namespace STINProject
 
             builder.Services.AddHangfireServer();
 
-            IExchangeRateGetter getter = new ExchangeRateGetter();
-            builder.Services.AddSingleton(getter);
+            builder.Services.AddSingleton<IExchangeRateGetter, ExchangeRateDocumentGetter>();
 
 
             var app = builder.Build();
