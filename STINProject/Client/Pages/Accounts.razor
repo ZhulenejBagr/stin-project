@@ -72,7 +72,20 @@ else
     }
 }
 
-
+@if (transactionAdded == true) {
+    <Alert Type="AlertType.Success">
+        <AlertItem>
+            <AlertText>Úspěšně přidaná transakce</AlertText>
+        </AlertItem>
+    </Alert>
+}
+@if (transactionAdded == false) {
+    <Alert Type="AlertType.Warning">
+        <AlertItem>
+            <AlertText>Nelze přidat transakci</AlertText>
+        </AlertItem>
+    </Alert>
+}
 
 
 @code {
@@ -92,6 +105,9 @@ else
         {
             transactionAdded = false;
         }
+
+        LoadData();
+
     }
 
 
@@ -121,7 +137,35 @@ else
                 }
             }
         }
-        
+
+    }
+
+    private async void LoadData()
+    {
+        if (SessionService.Session is not null && SessionService.Session.Valid)
+        {
+            transactions = new Dictionary<AccountModel, IEnumerable<TransactionViewModel>>();
+            accounts = await Http.GetFromJsonAsync<IEnumerable<AccountModel>>($"Account/{SessionService.Session.UserId}");
+
+            if (accounts is null)
+            {
+                return;
+            }
+
+            foreach (var account in accounts)
+            {
+                if (account is null)
+                {
+                    continue;
+                }
+
+                var trans = await Http.GetFromJsonAsync<IEnumerable<TransactionViewModel>>($"Account/Transactions/{account.AccountId}");
+                if (trans is not null)
+                {
+                    transactions[account] = trans;
+                }
+            }
+        }
     }
 
 }
