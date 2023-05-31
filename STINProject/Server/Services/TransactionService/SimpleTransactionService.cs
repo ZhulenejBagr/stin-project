@@ -77,10 +77,10 @@ namespace STINProject.Server.Services.TransactionService
                         return true;
                     }
 
-                    else if (quantity < 0 && account.Balance > 0 && account.Balance + quantity * accountLimitThreshold >= 0)
+                    else if (quantity < 0 && account.Balance > 0 && account.Balance + converted * accountLimitThreshold >= 0)
                     {
                         var transaction = new Transaction { AccountID = account.AccountId, Date = DateTime.Now, Value = converted };
-                        var additional = new Transaction { AccountID = account.AccountId, Date = DateTime.Now, Value = (account.Balance + quantity) * 0.1 };
+                        var additional = new Transaction { AccountID = account.AccountId, Date = DateTime.Now, Value = (account.Balance + converted) * 0.1 };
                         _persistenceService.AddTransaction(transaction);
                         _persistenceService.AddTransaction(additional);
                         return true;

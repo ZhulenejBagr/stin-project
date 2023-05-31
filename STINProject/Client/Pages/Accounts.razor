@@ -47,6 +47,24 @@ else
     </Form>
 
 
+    @if (transactionAdded == true)
+    {
+        <Alert Type="AlertType.Success" Closable=false>
+            <AlertItem>
+                <AlertText>Úspěšně přidaná transakce</AlertText>
+            </AlertItem>
+        </Alert>
+    }
+    @if (transactionAdded == false)
+    {
+        <Alert Type="AlertType.Warning" Closable=false>
+            <AlertItem>
+                <AlertText>Nelze přidat transakci</AlertText>
+            </AlertItem>
+        </Alert>
+    }
+
+
     @foreach (var acc in accounts)
     {
         <p>Tabulka transackí pro účet @acc.AccountId</p>
@@ -59,7 +77,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var trans in transactions[acc])
+                @foreach (var trans in transactions[acc.AccountId])
                 {
                     <tr>
                         <td>@trans.TranscationId</td>
@@ -72,34 +90,20 @@ else
     }
 }
 
-@if (transactionAdded == true) {
-    <Alert Type="AlertType.Success">
-        <AlertItem>
-            <AlertText>Úspěšně přidaná transakce</AlertText>
-        </AlertItem>
-    </Alert>
-}
-@if (transactionAdded == false) {
-    <Alert Type="AlertType.Warning">
-        <AlertItem>
-            <AlertText>Nelze přidat transakci</AlertText>
-        </AlertItem>
-    </Alert>
-}
 
 
 @code {
     private TransactionInputModel input = new();
     private bool? transactionAdded;
     private IEnumerable<AccountModel>? accounts;
-    private IDictionary<AccountModel, IEnumerable<TransactionViewModel>>? transactions;
+    private IDictionary<Guid, IEnumerable<TransactionViewModel>>? transactions;
 
     private async void AddTransaction()
     {
         var result = await Http.GetFromJsonAsync<bool>($"Account/Transactions/AddTransaction/{SessionService.Session.UserId}/{input.CurrencyCode}/{input.Value}");
         if (result)
         {
-            transactionAdded = true;
+            transactionAdded = true;    
         }
         else
         {
@@ -107,7 +111,7 @@ else
         }
 
         LoadData();
-
+        StateHasChanged();
     }
 
 
@@ -115,7 +119,7 @@ else
     {
         if (SessionService.Session is not null && SessionService.Session.Valid)
         {
-            transactions = new Dictionary<AccountModel, IEnumerable<TransactionViewModel>>();
+            transactions = new Dictionary<Guid, IEnumerable<TransactionViewModel>>();
             accounts = await Http.GetFromJsonAsync<IEnumerable<AccountModel>>($"Account/{SessionService.Session.UserId}");
 
             if (accounts is null)
@@ -133,7 +137,7 @@ else
                 var trans = await Http.GetFromJsonAsync<IEnumerable<TransactionViewModel>>($"Account/Transactions/{account.AccountId}");
                 if (trans is not null)
                 {
-                    transactions[account] = trans;
+                    transactions.Add(account.AccountId, trans);
                 }
             }
         }
@@ -144,7 +148,6 @@ else
     {
         if (SessionService.Session is not null && SessionService.Session.Valid)
         {
-            transactions = new Dictionary<AccountModel, IEnumerable<TransactionViewModel>>();
             accounts = await Http.GetFromJsonAsync<IEnumerable<AccountModel>>($"Account/{SessionService.Session.UserId}");
 
             if (accounts is null)
@@ -162,7 +165,8 @@ else
                 var trans = await Http.GetFromJsonAsync<IEnumerable<TransactionViewModel>>($"Account/Transactions/{account.AccountId}");
                 if (trans is not null)
                 {
-                    transactions[account] = trans;
+                    transactions[account.AccountId] = trans;
+                    StateHasChanged();
                 }
             }
         }
